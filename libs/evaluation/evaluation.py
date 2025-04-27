@@ -48,7 +48,7 @@ class Evaluation:
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS evaluations (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP,
                 evaluation_type TEXT NOT NULL,
                 metadata TEXT,
                 token_usage TEXT NOT NULL,
@@ -82,6 +82,11 @@ class Evaluation:
             if isinstance(step, BaseChatModel):
                 self.metadata["model"] = step.model
                 self.metadata["temperature"] = step.temperature
+
+                if hasattr(step, "num_predict"):
+                    self.metadata["max_tokens"] = step.num_predict
+                elif hasattr(step, "max_tokens"):
+                    self.metadata["max_tokens"] = step.max_tokens
 
     # TODO: 추후 비동기 수행 가능하도록 수정 필요
     def run_evaluation(self):
