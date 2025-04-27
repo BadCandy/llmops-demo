@@ -31,8 +31,8 @@ JUDGE_SYSTEM_PROMPT = """당신은 LLM의 출력 결과를 평가하는 전문�
 ###
 """
 
-JUDGE_USER_PROMPT = """출력: {output}
-기준 출력: {reference_output}
+JUDGE_USER_PROMPT = """출력: {{output}}
+기준 출력: {{reference_output}}
 """
 
 
@@ -44,6 +44,10 @@ class LLMJudgeEvaluator(Evaluator):
     def evaluate(self, input_variables: dict, reference_output: str) -> Dict[str, Any]:
         result = super().evaluate(input_variables, reference_output)
         llm_judge_result = self.llm_judge(result["output"], reference_output)
+        print("===================")
+        print(llm_judge_result)
+        print("===================")
+
         try:
             llm_judge_result = json.loads(llm_judge_result)
         except json.JSONDecodeError:
@@ -59,7 +63,7 @@ class LLMJudgeEvaluator(Evaluator):
     def llm_judge(self, output: str, reference_output: str):
         prompt_template = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(JUDGE_SYSTEM_PROMPT, template_format="jinja2"),
-            HumanMessagePromptTemplate.from_template(JUDGE_USER_PROMPT, template_format="jinja2")
+            HumanMessagePromptTemplate.from_template(JUDGE_USER_PROMPT, template_format="jinja2"),
         ])
 
         judge_chain = prompt_template | self.judge_model | StrOutputParser()

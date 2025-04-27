@@ -24,7 +24,7 @@ class DatasetStorage:
         ''')
 
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS DATA (
+            CREATE TABLE IF NOT EXISTS data (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 dataset_id INTEGER NOT NULL,
                 TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -1,10 +1,10 @@
-import os
 import sqlite3
 
 from libs.util.database import DEFAULT_DATABASE_PATH
 
 
 class PromptHub:
+
     def __init__(self, database: str = DEFAULT_DATABASE_PATH):
 
         self.database = database
