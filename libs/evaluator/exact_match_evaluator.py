@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from libs.evaluators import Evaluator
+from libs.evaluator import Evaluator
 
 
 class ExactMatchEvaluator(Evaluator):

@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 
-from libs.model_provider import ChatModelManager
-from libs.prompt_hub import PromptHub
+from libs.model.model_provider import ChatModelManager
+from libs.prompt.prompt_hub import PromptHub
 
 PROMPT_HUB = PromptHub()
 

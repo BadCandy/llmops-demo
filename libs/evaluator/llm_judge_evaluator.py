@@ -1,5 +1,5 @@
 import json
-from libs.evaluators import Evaluator
+from libs.evaluator import Evaluator
 from typing import Any, Dict
 
 from langchain_core.runnables.base import Runnable

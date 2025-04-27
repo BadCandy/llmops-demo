@@ -3,9 +3,8 @@ import sqlite3
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_ollama import ChatOllama
 
-from libs.model_provider import ChatModelManager
+from libs.model.model_provider import ChatModelManager
 
 default_database_path = os.path.dirname(os.path.dirname(__file__)) + "/llmops.db"
 

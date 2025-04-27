@@ -4,11 +4,10 @@ from typing import Any, Dict
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables.base import Runnable
 
-from libs.model_provider import ChatModelManager
+from libs.model.model_provider import ChatModelManager
 
 
 class EvaluatorType(Enum):
@@ -45,17 +44,17 @@ def create_evaluator(
         embedding_model: Embeddings = None,
 ) -> Evaluator:
     if evaluator_type == EvaluatorType.EXACT_MATCH:
-        from libs.evaluators import ExactMatchEvaluator
+        from libs.evaluator import ExactMatchEvaluator
         return ExactMatchEvaluator(chain=chain)
     elif evaluator_type == EvaluatorType.EMBEDDING_DISTANCE:
         if embedding_model is None:
             raise ValueError("embedding_model function must be provided for EmbeddingDistanceEvaluator")
-        from libs.evaluators import EmbeddingDistanceEvaluator
+        from libs.evaluator import EmbeddingDistanceEvaluator
         return EmbeddingDistanceEvaluator(chain=chain, embedding_model=embedding_model)
     elif evaluator_type == EvaluatorType.LLM_JUDGE:
         if judge_model is None:
             raise ValueError("judge_model function must be provided for LLMJudgeEvaluator")
-        from libs.evaluators import LLMJudgeEvaluator
+        from libs.evaluator import LLMJudgeEvaluator
         return LLMJudgeEvaluator(chain=chain, judge_model=judge_model)
     else:
         raise ValueError(f"Unsupported evaluator type: {evaluator_type}")
