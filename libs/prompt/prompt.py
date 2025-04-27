@@ -5,12 +5,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
 from libs.model.model_provider import ChatModelManager
-
-default_database_path = os.path.dirname(os.path.dirname(__file__)) + "/llmops.db"
+from libs.util.database import DEFAULT_DATABASE_PATH
 
 
 class Prompt:
-    def __init__(self, prompt_name: str, version_id: int = None, database: str = default_database_path):
+    def __init__(self, prompt_name: str, version_id: int = None, database: str = DEFAULT_DATABASE_PATH):
 
         self.conn = sqlite3.connect(database)
         self.prompt_name = prompt_name
@@ -59,6 +58,7 @@ class Prompt:
             ("system", self.system_template),
             ("user", self.user_template)
         ])
+
 
 if __name__ == '__main__':
     chat_prompt_template = Prompt(prompt_name="오늘의_날씨", version_id=3).get_chat_template()

@@ -1,11 +1,12 @@
 import os
 import sqlite3
 
-default_database_path = os.path.dirname(os.path.dirname(__file__)) + "/llmops.db"
+from libs.util.database import DEFAULT_DATABASE_PATH
+
 
 class PromptHub:
-    def __init__(self, database: str = default_database_path):
-        
+    def __init__(self, database: str = DEFAULT_DATABASE_PATH):
+
         self.database = database
         self._init_database()
         self.conn = sqlite3.connect(database)
@@ -18,7 +19,7 @@ class PromptHub:
         CREATE TABLE IF NOT EXISTS prompts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             prompt_name TEXT NOT NULL UNIQUE,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP
         )
         ''')
         conn.commit()
@@ -28,7 +29,7 @@ class PromptHub:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             prompt_id INTEGER NOT NULL,
             version_id INTEGER NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP,
             system_template TEXT,
             user_template TEXT,
             changed_details TEXT,
@@ -38,14 +39,14 @@ class PromptHub:
 
         conn.commit()
         conn.close()
-    
+
     def get_prompt_list(self):
         cursor = self.conn.cursor()
         cursor.execute('SELECT prompt_name FROM prompts')
         rows = cursor.fetchall()
-        
+
         return [row[0] for row in rows]
-    
+
     def get_prompt_versions(self, prompt_name: str):
         try:
             cursor = self.conn.cursor()
@@ -61,16 +62,16 @@ class PromptHub:
         except Exception as ex:
             print(f"Error fetching prompt: {ex}")
             return None
-        
-    def add_prompt(self, 
-            prompt_name: str, 
-            system_template: str, 
-            user_template: str):
-        
+
+    def add_prompt(self,
+                   prompt_name: str,
+                   system_template: str,
+                   user_template: str):
+
         prompt_name = prompt_name.strip().lower().replace(" ", "_")
         try:
             cursor = self.conn.cursor()
-            
+
             cursor.execute('INSERT INTO prompts (prompt_name) VALUES (?)', (prompt_name,))
             prompt_id = cursor.lastrowid
 
@@ -85,19 +86,19 @@ class PromptHub:
         except Exception as ex:
             print(f"Error Adding new prompt: {ex}")
             return False
-    
+
     def add_prompt_version(self,
-            prompt_name: str, 
-            system_template: str, 
-            user_template: str,
-            change_details: str):
+                           prompt_name: str,
+                           system_template: str,
+                           user_template: str,
+                           change_details: str):
         try:
             cursor = self.conn.cursor()
-        
+
             cursor.execute('SELECT id FROM prompts WHERE prompt_name = ?', (prompt_name,))
             result = cursor.fetchone()
             prompt_id = result[0]
-            
+
             cursor.execute('SELECT MAX(version_id) FROM prompt_versions WHERE prompt_id = ?', (prompt_id,))
             max_version = cursor.fetchone()[0]
             new_version_id = max_version + 1
@@ -105,12 +106,12 @@ class PromptHub:
             cursor.execute('''
                 INSERT INTO prompt_versions (prompt_id, version_id, system_template, user_template, changed_details)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (prompt_id, 
-                new_version_id,
-                system_template, 
-                user_template, 
-                change_details))
-            
+            ''', (prompt_id,
+                  new_version_id,
+                  system_template,
+                  user_template,
+                  change_details))
+
             self.conn.commit()
 
             return True
