@@ -11,7 +11,7 @@ from langchain_ollama import ChatOllama
 from langchain_pinecone import PineconeEmbeddings
 
 from libs.evaluator import EvaluatorType, create_evaluator
-from libs.util.database import DEFAULT_DATABASE_PATH
+from libs.util.secret import DEFAULT_DATABASE_PATH
 
 
 class Evaluation:

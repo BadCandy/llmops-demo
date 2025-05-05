@@ -1,7 +1,7 @@
 import sqlite3
 from typing import Dict, Optional, List, Any
 
-from libs.util.database import DEFAULT_DATABASE_PATH
+from libs.util.secret import DEFAULT_DATABASE_PATH
 
 # TODO: 추후 데이터셋 버저닝할수 있도록 개선
 class Dataset:

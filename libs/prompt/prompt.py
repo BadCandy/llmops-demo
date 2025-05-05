@@ -4,7 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
 from libs.model.model_provider import ChatModelManager
-from libs.util.database import DEFAULT_DATABASE_PATH
+from libs.util.secret import DEFAULT_DATABASE_PATH
 
 
 class Prompt:

@@ -2,7 +2,7 @@ import sqlite3
 from typing import List
 
 from libs.dataset import Dataset
-from libs.util.database import DEFAULT_DATABASE_PATH
+from libs.util.secret import DEFAULT_DATABASE_PATH
 
 
 class DatasetStorage:

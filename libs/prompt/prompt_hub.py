@@ -1,6 +1,6 @@
 import sqlite3
 
-from libs.util.database import DEFAULT_DATABASE_PATH
+from libs.util.secret import DEFAULT_DATABASE_PATH
 
 
 class PromptHub:
